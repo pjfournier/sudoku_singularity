@@ -119,6 +119,7 @@ import {
   shopUpgradeTypes,
   useConsumablePrompt
 } from './Shop'
+import { SUDOKU_UPGRADES, toggleAutoBoardSubmission, tryBuySudokuUpgrade } from './SudokuUpgrades'
 import {
   buyGoldenQuarks,
   buyGQUpgradeLevel,
@@ -213,6 +214,13 @@ export const generateEventHandlers = () => {
     'seventh',
     'eighth'
   ] satisfies FirstToEighth[]
+
+  SUDOKU_UPGRADES.forEach((upgrade) => {
+    DOMCacheGetOrSet(`sudokuUpgradeBtn${upgrade.id}`).addEventListener('click', () => {
+      tryBuySudokuUpgrade(upgrade.id)
+    })
+  })
+  DOMCacheGetOrSet('sudokuAutoSubmissionToggle').addEventListener('click', () => toggleAutoBoardSubmission())
 
   if (testing) {
     const warp = document.createElement('button')

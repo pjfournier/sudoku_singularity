@@ -7396,3 +7396,15 @@ html[data-instant-unlock2="false"] .infiniteAscentShopUpgrade {
         padding: 8px 12px;
     }
 }
+
+.npSummary { color: #d4a017; font-weight: 600; }
+.sudokuPanel { border: 1px solid #2a2a40; padding: 8px; margin: 8px 0; background: #101018; }
+.sudokuBoardStatus { color: #ddddf0; }
+.sudokuBoardGrid { color: #44cc88; line-height: 1.4; margin: 6px 0; }
+.solverLogPanel { max-height: 120px; overflow-y: auto; color: #aaaacc; font-family: monospace; }
+.sudokuUpgradeList { display: grid; grid-template-columns: repeat(2, minmax(240px, 1fr)); gap: 6px; margin-top: 8px; }
+.sudokuUpgradeBtn, .sudokuAutoSubmissionToggle { background: #181a25; border: 1px solid #39405d; color: #d7ddff; padding: 6px; text-align: left; font-size: 12px; }
+.sudokuUpgradeBtn:disabled { opacity: 0.65; }
+.sudokuUpgradeOwned { border-color: #44cc88; color: #b7ffd9; }
+.sudokuUpgradeLocked { border-color: #6b4250; color: #b38a97; }
+.sudokuAutoSubmissionToggle { margin-top: 6px; width: 100%; }

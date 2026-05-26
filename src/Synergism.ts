@@ -188,6 +188,11 @@ import { WowCubes, WowHypercubes, WowPlatonicCubes, WowTesseracts } from './Cube
 import { eventCheck } from './Event'
 import { autobuyAnts } from './Features/Ants'
 import { generateAntsAndCrumbs } from './Features/Ants/AntProducers/lib/generate-ant-producers'
+import {
+  getSudokuUpgradeMultiplier,
+  isAutoBoardSubmissionUnlocked,
+  pushSudokuLog
+} from './SudokuUpgrades'
 import { calculateImmortalELOGain } from './Features/Ants/AntSacrifice/Rewards/ELO/ImmortalELO/lib/calculate'
 import { getAntUpgradeEffect } from './Features/Ants/AntUpgrades/lib/upgrade-effects'
 import { AntUpgrades } from './Features/Ants/AntUpgrades/structs/structs'
@@ -4711,20 +4716,29 @@ const tick = () => {
 
 const updateSudokuSlice = (dt: number) => {
   const solvedBoardMultiplier = player.solvedBoards.add(1).pow(0.25)
-  const upgradePower = 1 + player.sudoku.upgrades.reduce((acc, value) => acc + value, 0) * 0.08
-  const boardSpeed = dt * solvedBoardMultiplier.toNumber() * player.sudoku.solverPower * upgradePower
+  const boardSpeedMultiplier = 1 + getSudokuUpgradeMultiplier('boardSpeed')
+  const npGainMultiplier = 1 + getSudokuUpgradeMultiplier('npGain')
+  const solvedBoardGainMultiplier = 1 + getSudokuUpgradeMultiplier('solvedBoardGain')
+  const boardSpeed = dt * solvedBoardMultiplier.toNumber() * player.sudoku.solverPower * boardSpeedMultiplier
   player.sudoku.boardFill = Math.min(100, player.sudoku.boardFill + boardSpeed * 2.5)
   player.sudoku.boardCellsSolved = Math.min(81, Math.floor(player.sudoku.boardFill / 100 * 81))
+  const passiveNP = Decimal.max(0, Decimal.mul(player.solvedBoards.add(1).pow(0.55), dt * 0.45 * npGainMultiplier))
+  player.coins = player.coins.add(passiveNP)
+  player.coinsThisPrestige = player.coinsThisPrestige.add(passiveNP)
+  player.coinsThisTranscension = player.coinsThisTranscension.add(passiveNP)
+  player.coinsThisReincarnation = player.coinsThisReincarnation.add(passiveNP)
+  player.coinsTotal = player.coinsTotal.add(passiveNP)
 
-  if (player.sudoku.boardFill >= 100) {
+  const shouldSubmitBoard = player.sudoku.boardFill >= 100
+    && (player.sudoku.autoBoardSubmission || !isAutoBoardSubmissionUnlocked())
+  if (shouldSubmitBoard) {
     player.sudoku.boardFill = 0
     player.sudoku.boardCompletions += 1
-    const boardGain = Decimal.max(1, Decimal.div(Decimal.log(player.coins.add(1), 10), 2))
+    const boardGain = Decimal.max(1, Decimal.div(Decimal.log(player.coins.add(1), 10), 2)).mul(solvedBoardGainMultiplier)
     player.solvedBoards = player.solvedBoards.add(boardGain)
     player.coins = new Decimal(100)
     player.coinsThisPrestige = new Decimal(100)
-    if (player.sudoku.log.length > 120) player.sudoku.log.shift()
-    player.sudoku.log.push(player.sudoku.boardCompletions % 3 === 0
+    pushSudokuLog(player.sudoku.boardCompletions % 3 === 0
       ? '3 in the corner has appeared again. Statistically insignificant. Monitoring continues.'
       : `Board submitted. +${format(boardGain, 2)} Solved Boards recorded.`)
   }

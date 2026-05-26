@@ -331,11 +331,15 @@
 
             <p id="coinInformation"></p>
             <p id="coinVanity"></p>
-            <p id="npSummary" style="color: #d4a017; font-weight: 600;"></p>
-            <div id="sudokuPanel" style="border: 1px solid #2a2a40; padding: 8px; margin: 8px 0; background: #101018;">
-                <p id="sudokuBoardStatus" style="color: #ddddf0;"></p>
-                <pre id="sudokuBoardGrid" style="color: #44cc88; line-height: 1.4; margin: 6px 0;"></pre>
-                <div id="solverLogPanel" style="max-height: 120px; overflow-y: auto; color: #aaaacc; font-family: monospace;"></div>
+            <p id="npSummary" class="npSummary"></p>
+            <div id="sudokuPanel" class="sudokuPanel">
+                <p id="sudokuBoardStatus" class="sudokuBoardStatus"></p>
+                <pre id="sudokuBoardGrid" class="sudokuBoardGrid"></pre>
+                <div id="solverLogPanel" class="solverLogPanel"></div>
+                <div id="sudokuUpgradeList" class="sudokuUpgradeList">
+                    <button id="sudokuUpgradeBtn0" class="sudokuUpgradeBtn"></button><button id="sudokuUpgradeBtn1" class="sudokuUpgradeBtn"></button><button id="sudokuUpgradeBtn2" class="sudokuUpgradeBtn"></button><button id="sudokuUpgradeBtn3" class="sudokuUpgradeBtn"></button><button id="sudokuUpgradeBtn4" class="sudokuUpgradeBtn"></button><button id="sudokuUpgradeBtn5" class="sudokuUpgradeBtn"></button><button id="sudokuUpgradeBtn6" class="sudokuUpgradeBtn"></button><button id="sudokuUpgradeBtn7" class="sudokuUpgradeBtn"></button><button id="sudokuUpgradeBtn8" class="sudokuUpgradeBtn"></button><button id="sudokuUpgradeBtn9" class="sudokuUpgradeBtn"></button>
+                </div>
+                <button id="sudokuAutoSubmissionToggle" class="sudokuAutoSubmissionToggle"></button>
             </div>
 
             <div class="buttonRow">

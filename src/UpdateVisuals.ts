@@ -55,6 +55,7 @@ import { hasEnoughCrumbsForSacrifice, MINIMUM_CRUMBS_FOR_SACRIFICE } from './Fea
 import { getAntUpgradeEffect } from './Features/Ants/AntUpgrades/lib/upgrade-effects'
 import { AntUpgrades } from './Features/Ants/AntUpgrades/structs/structs'
 import { updateLeaderboardUI } from './Features/Ants/HTML/updates/leaderboard'
+import { updateSudokuUpgradeUI } from './SudokuUpgrades'
 import { showLockedSacrifice, showSacrifice } from './Features/Ants/HTML/updates/sacrifice'
 import { autoAntSacrificeModeDescHTML } from './Features/Ants/HTML/updates/toggles/sacrifice-mode'
 import { AntProducers } from './Features/Ants/structs/structs'
@@ -250,6 +251,7 @@ export const visualUpdateBuildings = () => {
       }).join(' ')
     }).join('\n')
     DOMCacheGetOrSet('solverLogPanel').innerHTML = player.sudoku.log.slice(-10).map((entry) => `<div>${entry}</div>`).join('')
+    updateSudokuUpgradeUI()
 
     for (let i = 1; i <= 5; i++) {
       const place = G[coinUpper[i - 1]]
