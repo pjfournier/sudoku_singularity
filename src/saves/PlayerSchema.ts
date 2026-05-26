@@ -306,7 +306,11 @@ export const playerSchema = z.object({
     boardCompletions: z.number(),
     autoBoardSubmission: z.boolean(),
     solverPower: z.number(),
-    upgrades: z.number().array(),
+    upgrades: z.number().array().transform((arr) => {
+      const padded = arr.slice(0, 10)
+      while (padded.length < 10) padded.push(0)
+      return padded
+    }),
     log: z.string().array(),
     grid: z.string().array()
   }).default(() => JSON.parse(JSON.stringify(blankSave.sudoku))),
